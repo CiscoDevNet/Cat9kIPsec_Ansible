@@ -1,0 +1,57 @@
+#
+#     DATA FOR TUNNEL 1 CREATION
+#     Pay close attention to remote_ip/local_ip/psk
+tunnel1_name: tunnel1111
+tunnel2_name: tunnel2222
+
+t1_ike_peer:
+  remote_ip: 34.42.209.136
+  psk: BUMaslkdmalsmdlasm
+
+t1_ike_peer_profile:
+  remote_ip: 34.42.209.136
+  local_ip: 128.107.251.103
+
+t1_transform_set:
+  enc: esp-gcm
+  size: 256
+
+t1_interface:
+  name: Te1/0/3
+  ip: 172.16.0.12
+  subnet: 255.255.255.0
+
+t1_tunnel:
+  name: Tunnel23
+  ip: 169.254.202.10
+  subnet: 255.255.255.252
+  phy_inter: 128.107.251.103
+  destination: 34.42.209.136
+#
+#     DATA FOR TUNNEL 2 CREATION
+#     Pay close attention to remote_ip/local_ip/psk
+
+t2_ike_peer:
+  local_ip: 128.107.251.103
+  remote_ip: 34.42.105.239
+  psk: BUMaslkdmalsmdlasm
+
+t2_ike_peer_profile:
+  remote_ip: 34.42.105.239
+  local_ip: 128.107.251.103
+
+t2_transform_set:
+  enc: esp-gcm
+  size: 256
+
+t2_interface:
+  name: Te1/0/3
+  ip: 172.16.0.12
+  subnet: 255.255.255.0
+
+t2_tunnel:
+  name: Tunnel232
+  ip: 169.254.166.146
+  subnet: 255.255.255.252
+  phy_inter: 128.107.251.103
+  destination: 34.42.105.239

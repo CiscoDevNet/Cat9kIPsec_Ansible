@@ -1,0 +1,9 @@
+interface {{t2_tunnel.name}}
+    ip address {{t2_c9k_ip}} {{t2_tunnel.subnet}}
+    tunnel source {{t2_tunnel.phy_inter}}
+    tunnel mode ipsec ipv4
+    tunnel destination {{t2_tunnel.destination}}
+    tunnel protection ipsec profile ipsec-profile-{{tunnel_name}}
+    ip tcp adjust-mss 1379
+    
+

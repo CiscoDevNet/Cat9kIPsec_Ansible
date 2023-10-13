@@ -1,0 +1,60 @@
+---
+- name: Destroy AWS site
+  hosts: localhost
+  tasks:
+    - name: Delete a VPN 
+      community.aws.ec2_vpc_vpn:
+        state: absent
+        vpn_connection_id: "{{vpn_connection_id}}"
+      register: created_vpn
+    
+    - name: Print VPN info
+      debug:
+        var: created_vpn
+      
+    - name: Delete Virtual Gateway 
+      community.aws.ec2_vpc_vgw:
+        state: absent
+        vpn_gateway_id: "{{vpn_gateway_id}}"
+      register: created_vgw
+    
+    - name: Print VGW info
+      debug:
+        var: created_vgw
+
+    - name: Delete Subnet 
+      amazon.aws.ec2_vpc_subnet:
+        state: absent
+        vpc_id: "{{vpc_id}}"
+        cidr: "{{cidr}}"
+      register: database_subnet
+    
+    - name: Print Subnet info
+      debug:
+        var: database_subnet
+
+    - name: Delete VPC 
+      amazon.aws.ec2_vpc_net:
+        state: absent
+        vpc_id: "{{vpc_id}}"
+        name: scozma_ansible
+      register: vpc
+    
+    - name: Print VPC info
+      debug:
+        var: vpc
+      
+    - name: Delete Customer Gateway 
+      community.aws.ec2_customer_gateway:
+        state: absent
+        bgp_asn: "{{cg_bgp_asn}}"
+        ip_address: "{{cg_ip_address}}"
+        name: "{{cg_name}}"
+      register: customergw
+    
+    - name: Print Customer Gateway info
+      debug:
+        var: customergw
+
+
+    

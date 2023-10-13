@@ -1,0 +1,29 @@
+#General info
+gcp_project: notar-355207
+gcp_cred_kind: serviceaccount
+gcp_cred_file: ./gcp_auth.json
+region: us-central1
+onprem_ip_address: 128.107.251.103
+
+#Replace info here from generated file gcp_site_details.json to delete GCP
+delete_gateway_tunnel_1: {
+  gateway.selfLink: "https://www.googleapis.com/compute/v1/projects/notar-355207/regions/us-central1/targetVpnGateways/tunnel"
+}
+
+delete_gateway_tunnel_2: {
+  gateway.selfLink: "https://www.googleapis.com/compute/v1/projects/notar-355207/regions/us-central1/targetVpnGateways/tunnel2"
+}
+
+delete_external_ip_tunnel_1: {
+  delete_external_ip_tunnel_1.address: 35.188.200.160
+}
+
+delete_external_ip_tunnel_2: {
+  delete_external_ip_tunnel_2.address: 34.133.18.112
+}
+
+delete_network: {
+  delete_network.selfLink: "https://www.googleapis.com/compute/v1/projects/notar-355207/global/networks/tunnel"
+}
+
+

@@ -1,0 +1,6 @@
+crypto isakmp policy {{ike_policy.name}}
+  encryption {{ike_policy.enc}} {{ike_policy.size}}
+  authentication pre-share
+  group {{ike_policy.group}}
+  lifetime 28800
+  hash sha

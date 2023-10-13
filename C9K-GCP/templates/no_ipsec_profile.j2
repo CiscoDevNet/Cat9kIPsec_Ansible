@@ -1,0 +1,5 @@
+crypto ipsec profile ipsec-profile-{{tunnel_name}}
+  no set transform-set transform-set-{{tunnel_name}}
+  no set pfs group16
+  no set ikev2-profile ikev2-peer-profile-{{tunnel_name}}
+no crypto ipsec profile ipsec-profile-{{tunnel_name}}

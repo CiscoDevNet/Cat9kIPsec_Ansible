@@ -1,0 +1,112 @@
+---
+- name: Delete IPsec Tunnel
+  hosts: onprem-site
+  tasks:
+    # #
+    # #   TUNNEL 1 REMOVAL
+    # #
+    # - name: Delete tunnel - Tunnel 1
+    #   with_items: "{{ t1_tunnel }}"
+    #   vars:
+    #     tunnel_name: "{{tunnel1_name}}"
+    #   cli_config:
+    #     config: "{{ lookup('template', './templates/no_t1_tunnel.j2' ) }}"
+
+    # # - name: Delete interface for tunnel - Tunnel 1
+    # #   with_items: "{{ interface }}"
+    # #   vars:
+    # #     interface: "{{ t1_interface }}"
+    # #   cli_config:
+    # #    config: "{{ lookup('template', './templates/no_interface.j2' ) }}"
+
+    # - name: Delete Transform Set - Tunnel 1
+    #   with_items: "{{ t1_transform_set }}"
+    #   vars:
+    #     transform_set: "{{ t1_transform_set }}"
+    #     tunnel_name: "{{tunnel1_name}}"
+    #   cli_config:
+    #     config: "{{ lookup('template', './templates/no_transform_set.j2' ) }}"
+
+    # - name: Delete IPsec Profile - Tunnel 1
+    #   vars:
+    #     tunnel_name: "{{tunnel1_name}}"
+    #   cli_config:
+    #     config: "{{ lookup('template', './templates/no_ipsec_profile.j2' ) }}"
+
+    # - name: Delete IKE Peer Profile - Tunnel 1
+    #   with_items: "{{ t1_ike_peer_profile }}"
+    #   vars:
+    #     ike_peer_profile: "{{ t1_ike_peer_profile }}"
+    #     tunnel_name: "{{tunnel1_name}}"
+    #   cli_config:
+    #     config: "{{ lookup('template', './templates/no_ikev2_peer_profile.j2' ) }}"
+
+    # - name: Delete IKE Peer - Tunnel 1
+    #   with_items: "{{ t1_ike_peer }}"
+    #   vars:
+    #     ike_peer: "{{ t1_ike_peer }}"
+    #     tunnel_name: "{{tunnel1_name}}"
+    #   cli_config:
+    #     config: "{{ lookup('template', './templates/no_ikev2_peer.j2' ) }}"
+
+    # - name: Delete IKE Policy - Tunnel 1
+    #   with_items: "{{ t1_ike_policy }}"
+    #   vars:
+    #     ike_policy: "{{ t1_ike_policy }}"
+    #     tunnel_name: "{{tunnel1_name}}"
+    #   cli_config:
+    #     config: "{{ lookup('template', './templates/no_ikev2_policy.j2' ) }}"
+    # #
+    # #   TUNNEL 2 REMOVAL
+    # #
+    - name: Delete tunnel - Tunnel 2
+      with_items: "{{ t2_tunnel }}"
+      vars:
+        tunnel_name: "{{tunnel2_name}}"
+      cli_config:
+        config: "{{ lookup('template', './templates/no_t2_tunnel.j2' ) }}"
+
+    # - name: Delete interface for tunnel - Tunnel 2
+    #   with_items: "{{ interface }}"
+    #   vars:
+    #    interface: "{{ t2_interface }}"
+    #   cli_config:
+    #    config: "{{ lookup('template', './templates/no_interface.j2' ) }}"
+
+    - name: Delete Transform Set - Tunnel 2
+      with_items: "{{ t2_transform_set }}"
+      vars:
+        transform_set: "{{ t2_transform_set }}"
+        tunnel_name: "{{tunnel2_name}}"
+      cli_config:
+        config: "{{ lookup('template', './templates/no_transform_set.j2' ) }}"
+
+    - name: Delete IPsec Profile - Tunnel 2
+      vars:
+        tunnel_name: "{{tunnel2_name}}"
+      cli_config:
+        config: "{{ lookup('template', './templates/no_ipsec_profile.j2' ) }}"
+
+    - name: Delete IKE Peer Profile - Tunnel 2
+      with_items: "{{ t2_ike_peer_profile }}"
+      vars:
+        ike_peer_profile: "{{ t2_ike_peer_profile }}"
+        tunnel_name: "{{tunnel2_name}}"
+      cli_config:
+        config: "{{ lookup('template', './templates/no_ikev2_peer_profile.j2' ) }}"
+
+    - name: Delete IKE Peer - Tunnel 2
+      with_items: "{{ t2_ike_peer }}"
+      vars:
+        ike_peer: "{{ t2_ike_peer }}"
+        tunnel_name: "{{tunnel2_name}}"
+      cli_config:
+        config: "{{ lookup('template', './templates/no_ikev2_peer.j2' ) }}"
+
+    - name: Delete IKE Policy - Tunnel 2
+      with_items: "{{ t2_ike_policy }}"
+      vars:
+        ike_policy: "{{ t2_ike_policy }}"
+        tunnel_name: "{{tunnel2_name}}"
+      cli_config:
+        config: "{{ lookup('template', './templates/no_ikev2_policy.j2' ) }}"

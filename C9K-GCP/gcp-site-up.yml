@@ -1,0 +1,201 @@
+---
+- hosts: localhost
+  tasks:
+    - name: Create VPC
+      google.cloud.gcp_compute_network:
+        name: tunnel
+        project: "{{ gcp_project }}"
+        auto_create_subnetworks: 'true'
+        auth_kind: "{{ gcp_cred_kind }}"
+        service_account_file: "{{ gcp_cred_file }}"
+        state: present
+      register: network
+    
+    - name: Print VPC info
+      debug:
+        var: network
+
+    - name: Reserve External Address - TUNNEL 1
+      google.cloud.gcp_compute_address:
+        name: tunnel1
+        region: "{{region}}"
+        network_tier: PREMIUM
+        project: "{{ gcp_project }}"
+        auth_kind: "{{ gcp_cred_kind }}"
+        service_account_file: "{{ gcp_cred_file }}"
+        state: present
+      register: address_tunnel1
+    
+    - name: Print External Address info
+      debug:
+        var: address_tunnel1
+    
+    - name: Create target vpn gateway - TUNNEL 1
+      google.cloud.gcp_compute_target_vpn_gateway:
+        name: tunnel
+        region: "{{region}}"
+        network: "{{ network }}"
+        project: "{{ gcp_project }}"
+        auth_kind: "{{ gcp_cred_kind }}"
+        service_account_file: "{{ gcp_cred_file }}"
+        state: present
+      register: gateway_tunnel1
+    
+    - name: Print Target VPN info
+      debug:
+        var: gateway_tunnel1
+    
+    - name: Create ESP forwarding rule - TUNNEL 1
+      google.cloud.gcp_compute_forwarding_rule:
+        name: tunnel1-esp
+        region: "{{region}}"
+        network_tier: PREMIUM
+        ip_protocol: ESP
+        ip_address: "{{ address_tunnel1.address }}"
+        project: "{{ gcp_project }}"
+        auth_kind: "{{ gcp_cred_kind }}"
+        service_account_file: "{{ gcp_cred_file }}"
+        target: "{{gateway_tunnel1.selfLink}}"
+        state: present
+    
+    - name: Create UDP 500 forwarding rule - TUNNEL 1
+      google.cloud.gcp_compute_forwarding_rule:
+        name: tunnel1-udp-500
+        region: "{{region}}"
+        network_tier: PREMIUM
+        ip_protocol: UDP
+        port_range: 500-500
+        ip_address: "{{ address_tunnel1.address }}"
+        project: "{{ gcp_project }}"
+        auth_kind: "{{ gcp_cred_kind }}"
+        service_account_file: "{{ gcp_cred_file }}"
+        target: "{{gateway_tunnel1.selfLink}}"
+        state: present
+    
+    - name: Create UDP 4500 forwarding rule - TUNNEL 1
+      google.cloud.gcp_compute_forwarding_rule:
+        name: tunnel1-udp-4500
+        region: "{{region}}"
+        network_tier: PREMIUM
+        ip_protocol: UDP
+        port_range: 4500-4500
+        ip_address: "{{ address_tunnel1.address }}"
+        project: "{{ gcp_project }}"
+        auth_kind: "{{ gcp_cred_kind }}"
+        service_account_file: "{{ gcp_cred_file }}"
+        target: "{{gateway_tunnel1.selfLink}}"
+        state: present
+      
+    - name: Create VPN tunnel - TUNNEL 1
+      google.cloud.gcp_compute_vpn_tunnel:
+        name: tunnel1
+        region: "{{region}}"
+        target_vpn_gateway: "{{ gateway_tunnel1 }}"
+        shared_secret: BUMaslkdmalsmdlasm
+        peer_ip: "{{onprem_ip_address}}"
+        remote_traffic_selector: 0.0.0.0/0
+        local_traffic_selector: 0.0.0.0/0
+        project: "{{ gcp_project }}"
+        auth_kind: "{{ gcp_cred_kind }}"
+        service_account_file: "{{ gcp_cred_file }}"
+        state: present
+    
+    - name: Reserve External Address - TUNNEL 2
+      google.cloud.gcp_compute_address:
+        name: tunnel2
+        region: "{{region}}"
+        network_tier: PREMIUM
+        project: "{{ gcp_project }}"
+        auth_kind: "{{ gcp_cred_kind }}"
+        service_account_file: "{{ gcp_cred_file }}"
+        state: present
+      register: address_tunnel2
+    
+    - name: Print External Address
+      debug:
+        var: address_tunnel2
+    
+    - name: Create target vpn gateway - TUNNEL 2
+      google.cloud.gcp_compute_target_vpn_gateway:
+        name: tunnel2
+        region: "{{region}}"
+        network: "{{ network }}"
+        project: "{{ gcp_project }}"
+        auth_kind: "{{ gcp_cred_kind }}"
+        service_account_file: "{{ gcp_cred_file }}"
+        state: present
+      register: gateway_tunnel2
+    
+    - name: Print Target VPN
+      debug:
+        var: gateway_tunnel2
+    
+    - name: Create ESP forwarding rule - TUNNEL 2
+      google.cloud.gcp_compute_forwarding_rule:
+        name: tunnel2-esp
+        region: "{{region}}"
+        network_tier: PREMIUM
+        ip_protocol: ESP
+        ip_address: "{{ address_tunnel2.address }}"
+        project: "{{ gcp_project }}"
+        auth_kind: "{{ gcp_cred_kind }}"
+        service_account_file: "{{ gcp_cred_file }}"
+        target: "{{gateway_tunnel2.selfLink}}"
+        state: present
+    
+    - name: Create UDP 500 forwarding rule - TUNNEL 2
+      google.cloud.gcp_compute_forwarding_rule:
+        name: tunnel2-udp-500
+        region: "{{region}}"
+        network_tier: PREMIUM
+        ip_protocol: UDP
+        port_range: 500-500
+        ip_address: "{{ address_tunnel2.address }}"
+        project: "{{ gcp_project }}"
+        auth_kind: "{{ gcp_cred_kind }}"
+        service_account_file: "{{ gcp_cred_file }}"
+        target: "{{gateway_tunnel2.selfLink}}"
+        state: present
+    
+    - name: Create UDP 4500 forwarding rule - TUNNEL 2
+      google.cloud.gcp_compute_forwarding_rule:
+        name: tunnel2-udp-4500
+        region: "{{region}}"
+        network_tier: PREMIUM
+        ip_protocol: UDP
+        port_range: 4500-4500
+        ip_address: "{{ address_tunnel2.address }}"
+        project: "{{ gcp_project }}"
+        auth_kind: "{{ gcp_cred_kind }}"
+        service_account_file: "{{ gcp_cred_file }}"
+        target: "{{gateway_tunnel2.selfLink}}"
+        state: present
+    
+    - name: Create a VPN tunnel - TUNNEL 2 
+      google.cloud.gcp_compute_vpn_tunnel:
+        name: tunnel2
+        region: "{{region}}"
+        target_vpn_gateway: "{{ gateway_tunnel2 }}"
+        shared_secret: BUMaslkdmalsmdlasm
+        peer_ip: "{{onprem_ip_address}}"
+        remote_traffic_selector: 0.0.0.0/0
+        local_traffic_selector: 0.0.0.0/0
+        project: "{{ gcp_project }}"
+        auth_kind: "{{ gcp_cred_kind }}"
+        service_account_file: "{{ gcp_cred_file }}"
+        state: present
+    
+    - name: Create dict with details about infrastructure
+      set_fact: 
+          userdata: "{{ userdata | default({}) | combine ({ item.key : item.value }) }}"
+      with_items:
+        - { 'key': 'delete_network' , 'value': "{{network.selfLink}}" }
+        - { 'key': 'delete_gateway_tunnel_1' , 'value': "{{gateway_tunnel1.selfLink}}" }
+        - { 'key': 'delete_gateway_tunnel_2' , 'value': "{{gateway_tunnel2.selfLink}}" }
+        - { 'key': 'delete_external_ip_tunnel_1' , 'value': "{{address_tunnel1.address}}" }
+        - { 'key': 'delete_external_ip_tunnel_2' , 'value': "{{address_tunnel2.address}}" }
+    
+    - name: Store dict to gcp_site_details.json file
+      copy:
+       content: "{{ userdata }}"
+       dest: ./gcp_site_details.json

@@ -1,0 +1,57 @@
+---
+- name: Delete Site-to-Site
+  hosts: all
+  tasks:
+    - name: Delete tunnel
+      with_items: "{{ tunnel }}"
+      vars:
+        tunnel_name: "{{tunnel_site_name}}" 
+      cli_config:
+        config: "{{ lookup('template', './templates/no_tunnel.j2' ) }}"
+
+    # - name: Delete interface for tunnel
+    #   with_items: "{{ interface }}"
+    #   cli_config:
+    #    config: "{{ lookup('template', './templates/no_interface.j2' ) }}"
+    
+    - name: Delete IPsec Profile
+      vars:
+        tunnel_name: "{{tunnel_site_name}}" 
+      cli_config:
+        config: "{{ lookup('template', './templates/no_ipsec_profile.j2' ) }}"
+
+    - name: Delete Transform Set 
+      with_items: "{{ transform_set }}"
+      vars:
+        tunnel_name: "{{tunnel_site_name}}" 
+      cli_config:
+       config: "{{ lookup('template', './templates/no_transform_set.j2' ) }}"
+
+    - name: Delete IKEv2 Peer Profile
+      with_items: "{{ ikev2_peer_profile }}"
+      vars:
+        tunnel_name: "{{tunnel_site_name}}" 
+      cli_config:
+       config: "{{ lookup('template', './templates/no_ikev2_peer_profile.j2' ) }}"
+
+    - name: Delete IKEv2 Peer
+      with_items: "{{ ikev2_peer }}"
+      vars:
+        tunnel_name: "{{tunnel_site_name}}" 
+      cli_config:
+       config: "{{ lookup('template', './templates/no_ikev2_peer.j2' ) }}"
+
+    - name: Delete IKEv2 Policy
+      with_items: "{{ ikev2_policy }}"
+      vars:
+        tunnel_name: "{{tunnel_site_name}}" 
+      cli_config:
+       config: "{{ lookup('template', './templates/no_ikev2_policy.j2' ) }}"
+      
+    - name: Delete IKEv2 Proposal
+      with_items: "{{ ikev2_proposal }}"
+      vars:
+        tunnel_name: "{{tunnel_site_name}}" 
+      cli_config:
+       config: "{{ lookup('template', './templates/no_ikev2_prop.j2' ) }}"
+

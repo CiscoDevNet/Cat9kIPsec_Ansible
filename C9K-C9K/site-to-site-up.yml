@@ -1,0 +1,56 @@
+---
+- name: Establish Site-to-Site
+  hosts: all
+  tasks:  
+    - name: Configure IKEv2 Proposal
+      with_items: "{{ ikev2_proposal }}"
+      vars:
+        tunnel_name: "{{tunnel_site_name}}"
+      ios_config:
+        src: "ikev2_prop.j2"
+
+    - name: Configure IKEv2 Policy
+      with_items: "{{ ikev2_policy }}"
+      vars:
+        tunnel_name: "{{tunnel_site_name}}" 
+      ios_config:
+        src: "ikev2_policy.j2"
+
+    - name: Configure IKEv2 Peer
+      with_items: "{{ ikev2_peer }}"
+      vars:
+        tunnel_name: "{{tunnel_site_name}}" 
+      ios_config:
+        src: "ikev2_peer.j2"
+    
+    - name: Configure IKEv2 Peer Profile
+      with_items: "{{ ikev2_peer_profile }}"
+      vars:
+        tunnel_name: "{{tunnel_site_name}}" 
+      ios_config:
+        src: "ikev2_peer_profile.j2"
+    
+    - name: Configure Transform Set 
+      with_items: "{{ transform_set }}"
+      vars:
+        tunnel_name: "{{tunnel_site_name}}" 
+      ios_config:
+        src: "transform_set.j2"
+    
+    - name: Configure IPsec Profile
+      vars:
+        tunnel_name: "{{tunnel_site_name}}" 
+      ios_config:
+        src: "ipsec_profile.j2"
+
+    # - name: Configure interface for tunnel
+    #   with_items: "{{ interface }}"
+    #   ios_config:
+    #     src: "interface.j2"
+    
+    - name: Configure tunnel
+      with_items: "{{ tunnel }}"
+      vars:
+        tunnel_name: "{{tunnel_site_name}}" 
+      ios_config:
+        src: "tunnel.j2"

@@ -1,0 +1,7 @@
+interface {{t2_tunnel.name}}
+    no ip address {{t2_c9k_ip}} {{t2_tunnel.subnet}}
+    no tunnel source {{t2_tunnel.phy_inter}}
+    no tunnel mode ipsec ipv4
+    no tunnel destination {{t2_tunnel.destination}}
+    no tunnel protection ipsec profile ipsec-profile-{{tunnel_name}}
+no interface {{t2_tunnel.name}}

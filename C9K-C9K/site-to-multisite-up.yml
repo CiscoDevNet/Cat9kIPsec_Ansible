@@ -1,0 +1,124 @@
+---
+- name: Establish Site-to-Multisite
+  hosts: all
+  tasks:
+    - name: Configure IKEv2 Proposal
+      with_items: "{{ ikev2_proposal }}"
+      vars:
+        tunnel_name: "{{tunnel_site_name}}"
+      ios_config:
+        src: "ikev2_prop.j2"
+
+    - name: Configure IKEv2 Policy
+      with_items: "{{ ikev2_policy }}"
+      vars:
+        tunnel_name: "{{tunnel_site_name}}"
+      ios_config:
+        src: "ikev2_policy.j2"
+   
+    - name: Configure IKEv2 Peer to connect to Hub
+      when: "'spoke' in group_names"
+      with_items: "{{ ikev2_peer }}"
+      vars:
+        tunnel_name: "{{tunnel_site_name}}"
+      ios_config:
+        src: "ikev2_peer.j2"
+
+    - name: Configure IKEv2 to connect to Spoke 1
+      when: "'hub' in group_names"
+      with_items: "{{ ikev2_peer_spoke1 }}"
+      vars:
+        tunnel_spoke1_name: "{{tunnel_name_spoke1}}"
+      ios_config:
+        src: "ikev2_peer_spoke1.j2"
+    
+    - name: Configure IKEv2 to connect to Spoke 2
+      when: "'hub' in group_names"
+      with_items: "{{ ikev2_peer_spoke2 }}"
+      vars:
+        tunnel_spoke2_name: "{{tunnel_name_spoke2}}"
+      ios_config:
+        src: "ikev2_peer_spoke2.j2"
+    
+    - name: Configure IKEv2 Peer Profile to connect to Hub
+      when: "'spoke' in group_names"
+      with_items: "{{ ikev2_peer_profile }}"
+      vars:
+        tunnel_name: "{{tunnel_site_name}}"
+      ios_config:
+        src: "ikev2_peer_profile.j2"
+    
+    - name: Configure IKEv2 Peer Profile to connect to Spoke 1
+      when: "'hub' in group_names"
+      with_items: "{{ ikev2_peer_profile_spoke1 }}"
+      vars:
+        tunnel_spoke1_name: "{{tunnel_name_spoke1}}"
+      ios_config:
+        src: "ikev2_peer_profile_spoke1.j2"
+    
+    - name: Configure IKEv2 Peer Profile to connect to Spoke 2
+      when: "'hub' in group_names"
+      with_items: "{{ ikev2_peer_profile_spoke2 }}"
+      vars:
+        tunnel_spoke2_name: "{{tunnel_name_spoke2}}"
+      ios_config:
+        src: "ikev2_peer_profile_spoke2.j2"
+    
+    - name: Configure Transform Set 
+      with_items: "{{ transform_set }}"
+      vars:
+        tunnel_name: "{{tunnel_site_name}}"
+      ios_config:
+        src: "transform_set.j2"
+
+    - name: Configure IPsec Profile to connect to Hub
+      when: "'spoke' in group_names"
+      vars:
+        tunnel_name: "{{tunnel_site_name}}"
+      ios_config:
+        src: "ipsec_profile.j2"
+    
+    - name: Configure IPsec Profile to connect to Spoke 1
+      when: "'hub' in group_names"
+      vars:
+        tunnel_spoke1_name: "{{tunnel_name_spoke1}}"
+        tunnel_name: "{{tunnel_site_name}}"
+      ios_config:
+        src: "ipsec_profile_spoke1.j2"
+    
+    - name: Configure IPsec Profile to connect to Spoke 2
+      when: "'hub' in group_names"
+      vars:
+        tunnel_spoke2_name: "{{tunnel_name_spoke2}}"
+        tunnel_name: "{{tunnel_site_name}}"
+      ios_config:
+        src: "ipsec_profile_spoke2.j2"
+
+    # - name: Configure interface for tunnel
+    #   with_items: "{{ interface }}"
+    #   ios_config:
+    #     src: "interface.j2"
+    
+    - name: Configure tunnel to connect to Spoke 1
+      when: "'hub' in group_names"
+      with_items: "{{ tunnel_spoke1 }}"
+      vars:
+        tunnel_spoke1_name: "{{tunnel_name_spoke1}}"
+      ios_config:
+        src: "tunnel_spoke1.j2"
+    
+    - name: Configure tunnel to connect to Spoke 2
+      when: "'hub' in group_names"
+      with_items: "{{ tunnel_spoke2 }}"
+      vars:
+        tunnel_spoke2_name: "{{tunnel_name_spoke2}}"
+      ios_config:
+        src: "tunnel_spoke2.j2"
+    
+    - name: Configure tunnel to connect to Hub
+      when: "'spoke' in group_names"
+      with_items: "{{ tunnel }}"
+      vars:
+        tunnel_name: "{{tunnel_site_name}}"
+      ios_config:
+        src: "tunnel.j2"

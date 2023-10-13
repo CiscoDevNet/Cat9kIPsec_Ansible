@@ -1,0 +1,33 @@
+      # Pay attention to IP addresses and PSK!
+      tunnel_site_name: tunnelabc
+      ikev2_proposal:
+        ike_enc: aes-cbc-256
+        ike_integrity: sha512
+        ike_groups: 19 20 21
+      
+      ikev2_policy:
+        ip_addr: 172.16.99.24
+        
+      ikev2_peer:
+        peer_ip:  172.16.99.12
+        psk: C1sc0dna
+      
+      ikev2_peer_profile:
+        remote_ip: 172.16.99.12
+        local_ip: 172.16.99.24
+        
+      transform_set:
+        enc: esp-gcm
+        size: 256 
+
+      interface:
+        name: Te1/0/3
+        ip: 172.16.0.24
+        subnet: 255.255.255.0
+
+      tunnel:
+        name: Tunnel1
+        ip: 30.30.30.24
+        subnet: 255.255.255.0
+        phy_inter: Te1/0/3
+        destination: 172.16.0.12

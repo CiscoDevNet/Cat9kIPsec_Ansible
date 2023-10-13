@@ -1,0 +1,10 @@
+#Details regarding the Tunnel CIDR and PSK
+t1_aws_ip: 169.254.100.1
+t1_aws_psk: g23r8gr7grg23r8gaaaas2fnmf
+t2_aws_ip: 169.254.101.1
+t2_aws_psk: g23r8gr7grg23r8g2fnmf
+
+t1_c9k_ip: 169.254.100.2
+t1_c9k_psk: g23r8gr7grg23r8gaaaas2fnmf
+t2_c9k_ip: 169.254.101.2
+t2_c9k_psk: g23r8gr7grg23r8g2fnmf

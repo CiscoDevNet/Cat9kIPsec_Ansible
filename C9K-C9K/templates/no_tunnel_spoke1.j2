@@ -1,0 +1,7 @@
+interface {{tunnel_spoke1.name}}
+    no ip address {{tunnel_spoke1.ip}} {{tunnel_spoke1.subnet}}
+    no tunnel source {{tunnel_spoke1.phy_inter}}
+    no tunnel mode ipsec ipv4
+    no tunnel destination {{tunnel_spoke1.destination}}
+    no tunnel protection ipsec profile ipsec-profile-{{tunnel_spoke1_name}}
+no interface {{tunnel_spoke1.name}}

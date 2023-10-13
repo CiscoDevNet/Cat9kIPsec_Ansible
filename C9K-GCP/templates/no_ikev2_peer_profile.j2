@@ -1,0 +1,6 @@
+crypto ikev2 profile ikev2-peer-profile-{{tunnel_name}}
+    no match identity remote address {{ike_peer_profile.remote_ip}} 255.255.255.255
+    no authentication remote pre-share
+    no authentication local pre-share
+    no keyring local ikev2-keyring-{{tunnel_name}}
+no crypto ikev2 profile ikev2-peer-profile-{{tunnel_name}}

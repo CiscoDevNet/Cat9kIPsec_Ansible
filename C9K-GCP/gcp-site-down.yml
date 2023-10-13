@@ -1,0 +1,196 @@
+---
+- hosts: localhost
+  tasks:
+    - name: Delete VPN tunnel - TUNNEL 1
+      google.cloud.gcp_compute_vpn_tunnel:
+        name: tunnel1
+        region: "{{region}}"
+        target_vpn_gateway: "{{ delete_gateway_tunnel_1 }}"
+        shared_secret: BUMaslkdmalsmdlasm
+        peer_ip: "{{onprem_ip_address}}"
+        remote_traffic_selector: 0.0.0.0/0
+        local_traffic_selector: 0.0.0.0/0
+        project: "{{ gcp_project }}"
+        auth_kind: "{{ gcp_cred_kind }}"
+        service_account_file: "{{ gcp_cred_file }}"
+        state: absent
+      register: tunnel
+
+    - name: Print VPN tunnel 1
+      debug:
+        var: tunnel
+
+    - name: Delete VPN tunnel - TUNNEL 2
+      google.cloud.gcp_compute_vpn_tunnel:
+        name: tunnel2
+        region: "{{region}}"
+        target_vpn_gateway: "{{ delete_gateway_tunnel_2 }}"
+        shared_secret: BUMaslkdmalsmdlasm
+        peer_ip: "{{onprem_ip_address}}"
+        remote_traffic_selector: 0.0.0.0/0
+        local_traffic_selector: 0.0.0.0/0
+        project: "{{ gcp_project }}"
+        auth_kind: "{{ gcp_cred_kind }}"
+        service_account_file: "{{ gcp_cred_file }}"
+        state: absent
+      register: tunnel
+
+    - name: Print VPN tunnel 2
+      debug:
+        var: tunnel
+
+    - name: Delete external address - TUNNEL 1
+      google.cloud.gcp_compute_address:
+        name: tunnel1
+        region: "{{region}}"
+        network_tier: PREMIUM
+        project: "{{ gcp_project }}"
+        auth_kind: "{{ gcp_cred_kind }}"
+        service_account_file: "{{ gcp_cred_file }}"
+        state: absent
+      register: address
+
+    - name: Print External Address details
+      debug:
+        var: address
+
+    - name: Delete ESP forwarding rule  - TUNNEL 1
+      google.cloud.gcp_compute_forwarding_rule:
+        name: tunnel1-esp
+        region: "{{region}}"
+        network_tier: PREMIUM
+        ip_protocol: ESP
+        ip_address: "{{ delete_external_ip_tunnel_1 }}"
+        project: "{{ gcp_project }}"
+        auth_kind: "{{ gcp_cred_kind }}"
+        service_account_file: "{{ gcp_cred_file }}"
+        target: "{{delete_gateway_tunnel_1}}"
+        state: absent
+
+    - name: Delete UDP 500 forwarding rule - TUNNEL 1
+      google.cloud.gcp_compute_forwarding_rule:
+        name: tunnel1-udp-500
+        region: "{{region}}"
+        network_tier: PREMIUM
+        ip_protocol: UDP
+        port_range: 500-500
+        ip_address: "{{ delete_external_ip_tunnel_1 }}"
+        project: "{{ gcp_project }}"
+        auth_kind: "{{ gcp_cred_kind }}"
+        service_account_file: "{{ gcp_cred_file }}"
+        target: "{{delete_gateway_tunnel_1}}"
+        state: absent
+
+    - name: Delete UDP 4500 forwarding rule - TUNNEL 1
+      google.cloud.gcp_compute_forwarding_rule:
+        name: tunnel1-udp-4500
+        region: "{{region}}"
+        network_tier: PREMIUM
+        ip_protocol: UDP
+        port_range: 4500-4500
+        ip_address: "{{ delete_external_ip_tunnel_1 }}"
+        project: "{{ gcp_project }}"
+        auth_kind: "{{ gcp_cred_kind }}"
+        service_account_file: "{{ gcp_cred_file }}"
+        target: "{{delete_gateway_tunnel_1}}"
+        state: absent
+
+    - name: Delete target vpn gateway - TUNNEL 1
+      google.cloud.gcp_compute_target_vpn_gateway:
+        name: tunnel
+        region: "{{region}}"
+        network: "{{ delete_network }}"
+        project: "{{ gcp_project }}"
+        auth_kind: "{{ gcp_cred_kind }}"
+        service_account_file: "{{ gcp_cred_file }}"
+        state: absent
+      register: gateway
+
+    - name: Print target vpn gateway TUNNEL 1
+      debug:
+        var: gateway
+
+    - name: Delete ESP forwarding rule - TUNNEL 2
+      google.cloud.gcp_compute_forwarding_rule:
+        name: tunnel2-esp
+        region: "{{region}}"
+        network_tier: PREMIUM
+        ip_protocol: ESP
+        ip_address: "{{ delete_external_ip_tunnel_2 }}"
+        project: "{{ gcp_project }}"
+        auth_kind: "{{ gcp_cred_kind }}"
+        service_account_file: "{{ gcp_cred_file }}"
+        target: "{{delete_gateway_tunnel_2}}"
+        state: absent
+
+    - name: Delete UDP 500 forwarding rule - TUNNEL 2
+      google.cloud.gcp_compute_forwarding_rule:
+        name: tunnel2-udp-500
+        region: "{{region}}"
+        network_tier: PREMIUM
+        ip_protocol: UDP
+        port_range: 500-500
+        ip_address: "{{ delete_external_ip_tunnel_2 }}"
+        project: "{{ gcp_project }}"
+        auth_kind: "{{ gcp_cred_kind }}"
+        service_account_file: "{{ gcp_cred_file }}"
+        target: "{{delete_gateway_tunnel_2}}"
+        state: absent
+
+    - name: Delete UDP 4500 forwarding rule  - TUNNEL 2
+      google.cloud.gcp_compute_forwarding_rule:
+        name: tunnel2-udp-4500
+        region: "{{region}}"
+        network_tier: PREMIUM
+        ip_protocol: UDP
+        port_range: 4500-4500
+        ip_address: "{{ delete_external_ip_tunnel_2 }}"
+        project: "{{ gcp_project }}"
+        auth_kind: "{{ gcp_cred_kind }}"
+        service_account_file: "{{ gcp_cred_file }}"
+        target: "{{delete_gateway_tunnel_2}}"
+        state: absent
+
+    - name: Delete target vpn gateway - TUNNEL 2
+      google.cloud.gcp_compute_target_vpn_gateway:
+        name: tunnel2
+        region: "{{region}}"
+        network: "{{ delete_network }}"
+        project: "{{ gcp_project }}"
+        auth_kind: "{{ gcp_cred_kind }}"
+        service_account_file: "{{ gcp_cred_file }}"
+        state: absent
+      register: gateway
+
+    - name: Print target VPN 
+      debug:
+        var: gateway
+
+    - name: Delete external address - TUNNEL 2
+      google.cloud.gcp_compute_address:
+        name: tunnel2
+        region: "{{region}}"
+        network_tier: PREMIUM
+        project: "{{ gcp_project }}"
+        auth_kind: "{{ gcp_cred_kind }}"
+        service_account_file: "{{ gcp_cred_file }}"
+        state: absent
+      register: address
+
+    - name: Print External Address details
+      debug:
+        var: address
+
+    - name: Delete VPC
+      google.cloud.gcp_compute_network:
+        name: tunnel
+        project: "{{ gcp_project }}"
+        auto_create_subnetworks: "true"
+        auth_kind: "{{ gcp_cred_kind }}"
+        service_account_file: "{{ gcp_cred_file }}"
+        state: absent
+      register: network
+
+    - name: Print VPC
+      debug:
+        var: network

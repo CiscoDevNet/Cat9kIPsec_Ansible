@@ -1,0 +1,32 @@
+        tunnel_name_spoke1: spoke_abc
+        tunnel_name_spoke2: spoke_xyz
+
+        ikev2_peer_spoke1:
+                peer_ip: 172.16.99.24
+                psk: C1sc0dna
+
+        ikev2_peer_spoke2:
+                peer_ip: 10.85.134.94
+                psk: C1sc0dna
+
+        ikev2_peer_profile_spoke1:
+                remote_ip: 172.16.99.24
+                local_ip: 172.16.99.12
+        
+        ikev2_peer_profile_spoke2:
+                remote_ip: 10.85.134.94
+                local_ip: 10.85.134.92          
+
+        tunnel_spoke1:
+                name: Tunnel1
+                ip: 32.32.32.12
+                subnet: 255.255.255.0
+                phy_inter: Te1/0/3
+                destination: 172.16.99.24
+
+        tunnel_spoke2:
+                name: Tunnel2
+                ip: 30.30.30.12
+                subnet: 255.255.255.0
+                phy_inter: Te1/0/3
+                destination: 10.85.134.94

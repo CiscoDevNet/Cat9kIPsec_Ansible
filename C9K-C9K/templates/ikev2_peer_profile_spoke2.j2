@@ -1,0 +1,7 @@
+crypto ikev2 profile ikev2-peer-profile-{{tunnel_spoke2_name}}
+    match identity remote address {{ikev2_peer_profile_spoke2.remote_ip}} 255.255.255.255 
+    identity local address {{ikev2_peer_profile_spoke2.local_ip}}
+    authentication remote pre-share
+    authentication local pre-share
+    keyring local ikev2-keyring-{{tunnel_spoke2_name}}
+    no config-exchange request

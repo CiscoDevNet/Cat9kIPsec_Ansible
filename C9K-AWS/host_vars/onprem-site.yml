@@ -1,0 +1,65 @@
+#
+#     DATA FOR TUNNEL 1 CREATION
+#
+tunnel1_name: tunnel1111
+tunnel2_name: tunnel2222
+
+t1_ike_policy:
+  name: 200
+  enc: aes
+  size: 128
+  group: 2
+
+t1_ike_peer:
+  local_ip: 128.107.251.103
+  remote_ip: 13.52.0.115
+
+t1_ike_peer_profile:
+  remote_ip: 13.52.0.115
+  local_ip: 128.107.251.103
+
+t1_transform_set:
+  enc: esp-aes
+  size: 128 esp-sha-hmac
+
+t1_interface:
+  name: Te1/0/3
+  ip: 172.16.0.12
+  subnet: 255.255.255.0
+
+t1_tunnel:
+  name: Tunnel23
+  subnet: 255.255.255.252
+  phy_inter: 128.107.251.103
+  destination: 13.52.0.115
+#
+#     DATA FOR TUNNEL 2 CREATION
+#
+t2_ike_policy:
+  name: 201
+  enc: aes
+  size: 128
+  group: 2
+
+t2_ike_peer:
+  local_ip: 128.107.251.103
+  remote_ip: 52.52.210.246
+
+t2_ike_peer_profile:
+  remote_ip: 52.52.210.246
+  local_ip: 128.107.251.103
+
+t2_transform_set:
+  enc: esp-aes
+  size: 128 esp-sha-hmac
+
+t2_interface:
+  name: Te1/0/3
+  ip: 172.16.0.12
+  subnet: 255.255.255.0
+
+t2_tunnel:
+  name: Tunnel232
+  subnet: 255.255.255.252
+  phy_inter: 128.107.251.103
+  destination: 52.52.210.246

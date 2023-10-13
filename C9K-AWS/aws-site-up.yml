@@ -1,0 +1,83 @@
+---
+- name: Establish AWS site
+  hosts: localhost
+  tasks:
+    - name: Create VPC
+      amazon.aws.ec2_vpc_net:
+        name: scozma_ansible
+        cidr_block: 10.10.0.0/16
+        tenancy: dedicated
+      register: vpc
+    
+    - name: Print VPC info
+      debug:
+        var: vpc
+
+    - name: Create subnet for VPC
+      amazon.aws.ec2_vpc_subnet:
+        state: present
+        vpc_id: "{{ vpc.vpc.id }}"
+        cidr: 10.10.1.0/24
+      register: database_subnet
+    
+    - name: Print subnet info
+      debug:
+        var: database_subnet
+      
+    - name: Create Customer Gateway
+      community.aws.ec2_customer_gateway:
+        routing: static
+        ip_address: "{{onprem_ip_address}}"
+        name: Ansible_scozma
+      register: customergw
+    
+    - name: Print Customer Gateway info
+      debug:
+        var: customergw
+
+    - name: Create a new Virtual Gateway
+      community.aws.ec2_vpc_vgw:
+        state: present
+        vpc_id: "{{vpc.vpc.id}}"
+        name: personal-testing
+      register: created_vgw
+    
+    - name: Print Virtual Gateway info
+      debug:
+        var: created_vgw
+    
+    - name: Create VPN connection
+      community.aws.ec2_vpc_vpn:
+        static_only: True
+        vpn_gateway_id: "{{created_vgw.vgw.id}}"
+        customer_gateway_id: "{{customergw.gateway.customer_gateway.customer_gateway_id}}"
+        tunnel_options:
+          -
+            TunnelInsideCidr: "{{t1_aws_ip}}/30"
+            PreSharedKey: "{{t1_aws_psk}}"
+          -
+            TunnelInsideCidr: "{{t2_aws_ip}}/30"
+            PreSharedKey: "{{t2_aws_psk}}"
+      register: created_vpn
+    
+    - name: Print VPN info
+      debug:
+        var: created_vpn
+    
+    - name: Create dict with AWS site details
+      set_fact: 
+          userdata: "{{ userdata | default({}) | combine ({ item.key : item.value }) }}"
+      with_items:
+        - { 'key': 'vpn_connection_id' , 'value': "{{created_vpn.vpn_connection_id}}" }
+        - { 'key': 'cg_id' , 'value': "{{customergw.gateway.customer_gateway.customer_gateway_id}}"}
+        - { 'key': 'vpc_id' , 'value': "{{ vpc.vpc.id }}"}
+        - { 'key': 'vpn_gateway_id' , 'value': "{{created_vpn.vpn_gateway_id}}"}
+        - { 'key': 'cg_name' , 'value': 'Name must be found manually'}
+        - { 'key': 'cg_ip_address' , 'value': "{{customergw.gateway.customer_gateway.ip_address}}"}
+        - { 'key': 'cidr' , 'value': "{{database_subnet.subnet.cidr_block}}"}
+        
+
+    - name: Store dict to aws_site_details.json file
+      copy:
+       content: "{{ userdata }}"
+       dest: ./aws_site_details.json

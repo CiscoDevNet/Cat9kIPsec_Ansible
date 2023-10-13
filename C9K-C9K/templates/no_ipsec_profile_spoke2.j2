@@ -1,0 +1,6 @@
+crypto ipsec profile  ipsec-profile-{{tunnel_spoke2_name}}
+    no set security-association lifetime seconds 28800
+    no set security-policy limit 1 
+    no set transform-set transform-set-{{tunnel_spoke2_name}}
+    no set ikev2-profile ikev2-peer-profile-{{tunnel_name}}
+no crypto ipsec profile  ipsec-profile-{{tunnel_spoke2_name}}

@@ -1,0 +1,6 @@
+crypto ikev2 keyring ikev2-keyring-{{tunnel_name}}
+    peer GCP
+        no address {{ike_peer.remote_ip}}
+        no pre-shared-key {{ike_peer.psk}}
+    no peer GCP
+no crypto ikev2 keyring ikev2-keyring-{{tunnel_name}}

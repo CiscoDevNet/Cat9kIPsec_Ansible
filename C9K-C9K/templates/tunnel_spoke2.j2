@@ -1,0 +1,7 @@
+interface {{tunnel_spoke2.name}}
+    ip address {{tunnel_spoke2.ip}} {{tunnel_spoke2.subnet}}
+    tunnel source {{tunnel_spoke2.phy_inter}}
+    tunnel mode ipsec ipv4
+    tunnel destination {{tunnel_spoke2.destination}}
+    tunnel protection ipsec profile ipsec-profile-{{tunnel_spoke2_name}}
+

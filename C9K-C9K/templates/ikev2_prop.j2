@@ -1,0 +1,5 @@
+crypto ikev2 proposal ikev2-proposal-{{tunnel_name}}
+    encryption  {{ikev2_proposal.ike_enc}}
+    integrity  {{ikev2_proposal.ike_integrity}}
+    group  {{ikev2_proposal.ike_groups}}
+crypto ikev2 dpd 10 5 periodic

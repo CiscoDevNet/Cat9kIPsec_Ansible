@@ -1,0 +1,7 @@
+crypto ikev2 policy ikev2-policy-{{tunnel_name}}
+    match address local {{ikev2_policy.ip_addr}}
+    proposal ikev2-proposal-{{tunnel_name}}
+
+crypto ikev2 policy peers 
+    match fvrf any
+    proposal ikev2-proposal-{{tunnel_name}}

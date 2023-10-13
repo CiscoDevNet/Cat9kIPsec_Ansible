@@ -1,0 +1,4 @@
+crypto ikev2 keyring ikev2-keyring-{{tunnel_name}}
+  peer GCP
+    address {{ike_peer.remote_ip}}
+    pre-shared-key {{ike_peer.psk}}

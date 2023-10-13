@@ -1,0 +1,4 @@
+crypto isakmp profile isakmp-profile-{{tunnel_name}}
+  local-address {{ike_peer_profile.local_ip}}
+  match identity address {{ike_peer_profile.remote_ip}}
+  keyring keyring-{{tunnel_name}}

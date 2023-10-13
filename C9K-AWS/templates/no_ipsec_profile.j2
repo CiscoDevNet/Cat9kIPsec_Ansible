@@ -1,0 +1,5 @@
+crypto ipsec profile ipsec-profile-{{tunnel_name}}
+  no set pfs group2
+  no set security-association lifetime seconds 3600
+  no set transform-set {transform-set-{{tunnel_name}}
+no crypto ipsec profile ipsec-profile-{{tunnel_name}}

@@ -1,0 +1,7 @@
+crypto isakmp policy {{ike_policy.name}}
+  no encryption {{ike_policy.enc}} {{ike_policy.size}}
+  no authentication pre-share
+  no group {{ike_policy.group}}
+  no lifetime 28800
+  no hash sha
+no crypto isakmp policy {{ike_policy.name}}
