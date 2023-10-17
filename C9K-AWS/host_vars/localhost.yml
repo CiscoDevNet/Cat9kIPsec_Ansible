@@ -1,6 +1,6 @@
 #General info
-aws_access_key: "AKIA5NNB2HUJCJGKVHXE"
-aws_secret_key: "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"
+aws_access_key: "*********************"
+aws_secret_key: "*********************"
 region: us-west-1
 onprem_ip_address: 128.107.251.103
 
